@@ -1,0 +1,58 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "My First Api Documentation",
+        "contact": {
+            "email": "info@example.com"
+        },
+        "version": "0.1"
+    },
+    "servers": [
+        {
+            "url": "http://127.0.0.1:8000/api/",
+            "description": "learning new"
+        }
+    ],
+    "paths": {
+        "/": {
+            "get": {
+                "operationId": "d883a48d298b1b6f7bb8a182af9968d3",
+                "responses": {
+                    "200": {
+                        "description": "deneme"
+                    }
+                }
+            }
+        },
+        "/users/{user}": {
+            "get": {
+                "operationId": "22e045d107cebc43056dd946ef5c565a",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "bir kullanıcı getirir"
+                    }
+                }
+            }
+        },
+        "/users": {
+            "get": {
+                "operationId": "8a69dc0275bdae56a1723b3ea327576b",
+                "responses": {
+                    "200": {
+                        "description": "tüm kullanıcılar"
+                    }
+                }
+            }
+        }
+    }
+}

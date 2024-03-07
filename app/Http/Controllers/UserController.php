@@ -8,10 +8,7 @@ use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Services\UserService;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
-
+use OpenApi\Annotations as QA;
 class UserController extends Controller
 {
     /**
@@ -64,8 +61,28 @@ class UserController extends Controller
     /**
      * @param User $user
      * @return \Illuminate\Http\JsonResponse
+     * @QA\Get(
+     *  path="/users/{user}",
+     *  @QA\Response(
+     *      response=200,
+     *      description="bir kullanıcı getirir"
+     *  ),
+     *  @QA\Parameter(
+     *      name="user",
+     *      in="path",
+     *      required=true,
+     *      @QA\Schema(type="integer")
+     *  )
+     * )
      */
     public function getSingleUser(User $user) {
+        if (is_null($user)) {
+            return response()->json([
+                'user' => null,
+                'message' => 'Aradığınız kullanıcı bulunamadı.'
+            ]);
+        }
+
         return response()->json([
             'user' => $user,
             'message' => 'kullanıcı başarılı bir şekilde listelendi'
@@ -74,6 +91,16 @@ class UserController extends Controller
 
     /**
      * @return \Illuminate\Http\JsonResponse
+     * @QA\Get(
+     *  path="/users",
+     *  @QA\Response(
+     *      response=200,
+     *      description="tüm kullanıcılar"
+     *  ),
+     *  @QA\PathItem(
+     *  
+     *  ),
+     * )
      */
     public function getAllUsers() {
         $allUsers = $this->userService->getAllUsers();
