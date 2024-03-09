@@ -8,6 +8,8 @@ use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Services\UserService;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 use OpenApi\Annotations as QA;
 class UserController extends Controller
 {
@@ -26,22 +28,23 @@ class UserController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function login(LoginRequest $request) {
-        $email = $request->get('email');
-        $password = $request->get('password');
+        if (Auth::attempt([
+            'worker_email' => $request->email, 
+            'password' => $request->password
+        ])) {
+            $user = Auth::user();
 
-        $isHasUser = $this->userService->isHasUser($email, $password);
+            $token = $user->createToken('auth_token')->plainTextToken;
 
-        if ($isHasUser) {
             return response()->json([
-                'message' => 'Kullanıcı giriş bilgileri doğru.',
-                'user' => $isHasUser,
-                'token' => $isHasUser->api_token
-            ], 200);
+                'user' => $user,
+                'token' => $token
+            ]);
         }
-
+        
         return response()->json([
-            'message' => 'Girdiğiniz bilgiler ile uyuşan bir profil bulunamadı'
-        ], 404);
+            'error' => 'Giriş bilgileri yanlış',
+        ]);
     }
 
     /**

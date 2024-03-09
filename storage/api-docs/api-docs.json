@@ -16,10 +16,20 @@
     "paths": {
         "/": {
             "get": {
-                "operationId": "d883a48d298b1b6f7bb8a182af9968d3",
+                "operationId": "fa794213c0d03d5a2cbea3b72738483f",
                 "responses": {
                     "200": {
                         "description": "deneme"
+                    }
+                }
+            }
+        },
+        "/company/register": {
+            "get": {
+                "operationId": "6023fe1655947f843ea9027beb8011ac",
+                "responses": {
+                    "200": {
+                        "description": "company register"
                     }
                 }
             }

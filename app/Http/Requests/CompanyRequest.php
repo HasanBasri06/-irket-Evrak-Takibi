@@ -2,12 +2,14 @@
 
 namespace App\Http\Requests;
 
+use Exception;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
+use Throwable;
 
-class LoginRequest extends FormRequest
+class CompanyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,16 +27,11 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|email:rfc,dns',
-            'password' => 'required'
-        ];
-    }
-
-    public function messages() {
-        return [
-            'required' => 'Lütfen boş alan bırakmayınız',
-            'password.min' => 'Lütfen minimum 8 karakterli bir şifre oluşturun.',
-            'email.email' => 'Lütfen geçerli bir email giriniz.'
+            'name' => 'required',
+            'domain' => 'required',
+            'company_email' => 'required|email',
+            'logo' => 'required|file|mimes:jpg,png,jpeg',
+            'description' => 'required|max:255|min:15',
         ];
     }
 

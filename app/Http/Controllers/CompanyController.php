@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CompanyRequest;
+use App\Services\CompanyService;
+use App\Traits\HttpResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -12,35 +15,29 @@ use OpenApi\Attributes as QA;
 
 class CompanyController extends Controller
 {
+    use HttpResponse;
+
+    /**
+     * @param CompanyService $companyService
+     */
+    public function __construct(
+        private CompanyService $companyService,
+    )
+    {
+        $this->companyService = $companyService;
+    }
+
     #[QA\Get(
         path: '/',
         responses: [
             new QA\Response(response: 200, description: 'deneme')
         ]
     )]
-    public function index(): JsonResponse {
-        $name = Redis::get('name');
-        Redis::sadd('tags', 'laravel', 'php', 'vue');
+    public function index() {
 
-        $tags = Redis::smembers('tags');
-        $technologies = ['PHP', 'Laravel', 'Vue'];
+    }
 
-        Redis::hmset('user:1', [
-            'name' => 'Hasan Basri',
-            'age' => 23,
-            'technologies' => json_encode($technologies)
-         ]);
-
-        $name = Redis::hget('user:1', 'name');
-
-        $getAll = Redis::hgetall('user:1');
-
-
-        return Response::json([
-            'tags' => $tags,
-            'name' => $name,
-            'user' => $getAll,
-            'title' => Cache::get('title')
-        ]);
+    public function register(CompanyRequest $request) {
+        return $this->companyService->store($request->all());
     }
 }

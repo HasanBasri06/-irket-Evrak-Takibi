@@ -3,6 +3,8 @@
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ComponyController;
 use App\Http\Controllers\UserController;
+use App\Models\Company;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 use L5Swagger\Http\Controllers\SwaggerController;
 
@@ -32,5 +34,12 @@ Route::controller(UserController::class)->group(function () {
 Route::controller(CompanyController::class)->group(function () {
     Route::prefix('company')->group(function () {
         Route::get('/', 'index');
+        Route::post('/register', 'register')->middleware('hasCompany');
     });
+});
+
+Route::get('test', function () {
+    $company = Company::with('owner')->get();
+
+    dd($company );
 });
