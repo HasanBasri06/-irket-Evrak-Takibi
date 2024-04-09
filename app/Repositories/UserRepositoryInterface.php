@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Repositories;
 
@@ -10,17 +10,18 @@ interface UserRepositoryInterface {
     public function getUserDetailByEmail(string $email);
 
     /**
-     * @param string $firstName
-     * @param string $lastName
-     * @param string $image
-     * @param string $email
-     * @param string $password
-     * @return mixed
+     * @param $userData
      */
-    public function saveUser(string $firstName, string $lastName, string $image, string $email, string $password);
+    public function saveUser($userData);
 
     /**
      * @return mixed
      */
-    public function getAllUsers();    
+    public function getAllUsers();
+
+    /**
+     * @param int $companyId
+     * @return mixed
+     */
+    public function getCompanyDetailById(int $companyId);
 }

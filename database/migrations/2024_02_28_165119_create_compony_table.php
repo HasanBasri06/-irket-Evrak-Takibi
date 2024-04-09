@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('company_email');
             $table->string('logo');
             $table->string('description');
+            $table->enum('status', ['active', 'passive']);
             $table
                 ->foreignId('company_owner_id')
                 ->nullable()

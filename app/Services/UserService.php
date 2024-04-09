@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Jobs\UserLoginSendEmail;
 use App\Repositories\UserRepositoryInterface;
 
 class UserService {
@@ -23,20 +24,8 @@ class UserService {
         return $this->userRepository->getUserDetailByEmail($email);
     }
 
-    /**
-     * @param string $firstName
-     * @param string $lastName
-     * @param string $image
-     * @return bool
-     */
-    public function saveUser(string $firstName, string $lastName, string $image, string $email, string $password) {
-        return $this->userRepository->saveUser(
-            $firstName,
-            $lastName,
-            $image,
-            $email,
-            $password
-        );
+    public function saveUser($userData) {
+         return $this->userRepository->saveUser($userData);
     }
 
     /**
@@ -44,5 +33,16 @@ class UserService {
      */
     public function getAllUsers() {
         return $this->userRepository->getAllUsers();
+    }
+
+    /**
+     * @param string $email
+     * @param integer $companyId
+     * @return void
+     */
+    public function getUserByDetail(string $email, string $role, int $companyId) {
+        $getCompanyDetailById = $this->userRepository->getCompanyDetailById($companyId);
+
+        dispatch(new UserLoginSendEmail($role, $email, $companyId));
     }
 }

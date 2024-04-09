@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\UserResource;
+use App\Mail\SendUserLogin;
 use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
 use OpenApi\Annotations as QA;
 class UserController extends Controller
@@ -29,7 +31,7 @@ class UserController extends Controller
      */
     public function login(LoginRequest $request) {
         if (Auth::attempt([
-            'worker_email' => $request->email, 
+            'email' => $request->email,
             'password' => $request->password
         ])) {
             $user = Auth::user();
@@ -41,7 +43,7 @@ class UserController extends Controller
                 'token' => $token
             ]);
         }
-        
+
         return response()->json([
             'error' => 'Giriş bilgileri yanlış',
         ]);
@@ -52,13 +54,7 @@ class UserController extends Controller
      * @return bool
      */
     public function register(RegisterRequest $request) {
-        return $this->userService->saveUser(
-            $request->get('first_name'),
-            $request->get('last_name'),
-            $request->get('image'),
-            $request->get('email'),
-            $request->get('password'),
-        );
+         return $this->userService->saveUser($request->all());
     }
 
     /**
@@ -101,7 +97,7 @@ class UserController extends Controller
      *      description="tüm kullanıcılar"
      *  ),
      *  @QA\PathItem(
-     *  
+     *
      *  ),
      * )
      */

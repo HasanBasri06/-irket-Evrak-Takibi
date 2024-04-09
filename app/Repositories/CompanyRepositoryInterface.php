@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Repositories;
 
@@ -16,5 +16,15 @@ interface CompanyRepositoryInterface {
      * @param string $email
      * @return boolean
      */
-    public function hasCompanyByEmail(string $email): bool;
+    public function hasCompanyByEmail(string $email = null): bool;
+
+    /**
+     * @param int $companyId
+     */
+    public function hasCompany(int $companyId);
+
+    /**
+     * @param int $companyId
+     */
+    public function requestCompany(int $companyId);
 }

@@ -27,9 +27,9 @@ class RegisterRequest extends FormRequest
         return [
             'first_name' => 'required',
             'last_name' => 'required',
-            'image' => 'required',
-            'email' => 'required|email:rfc,dns',
+            'email' => 'required|email',
             'password' => 'required|min:8',
+            'image' => 'nullable|mimes:jpg,png,jpeg'
         ];
     }
 
@@ -38,7 +38,8 @@ class RegisterRequest extends FormRequest
         return [
             'required' => 'Lütfen boş bir alan bırakmayınız.',
             'email.email' => 'Email adresi hatalı.',
-            'password.min' => 'Şifre minumum 8 karakterden oluşmalıdır.'
+            'password.min' => 'Şifre minumum 8 karakterden oluşmalıdır.',
+            'image.mimes' => 'Resim formatı JPG, PNG ve JPEG olmalıdır'
         ];
     }
 

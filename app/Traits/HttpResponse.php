@@ -7,6 +7,7 @@ trait HttpResponse {
         return response()->json([
             'message' => $message,
             'data' => $data,
+            'status' => 'success',
         ], $code);
     }
 
@@ -14,6 +15,15 @@ trait HttpResponse {
         return response()->json([
             'message' => $message,
             'data' => $data,
+            'status' => 'error',
+        ], $code);
+    }
+
+    protected function info($data, $message, $code) {
+        return response()->json([
+            'message' => $message,
+            'data' => $data,
+            'status' => 'info',
         ], $code);
     }
 }

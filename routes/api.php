@@ -1,10 +1,7 @@
 <?php
 
 use App\Http\Controllers\CompanyController;
-use App\Http\Controllers\ComponyController;
 use App\Http\Controllers\UserController;
-use App\Models\Company;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 use L5Swagger\Http\Controllers\SwaggerController;
 
@@ -22,7 +19,7 @@ use L5Swagger\Http\Controllers\SwaggerController;
 Route::get('/documantation', [SwaggerController::class, 'api']);
 
 Route::controller(UserController::class)->group(function () {
-    Route::prefix('auth')->group(function () {
+    Route::group(['prefix' => 'auth'], function () {
         Route::post('/login', 'login');
         Route::post('/register', 'register');
     });
@@ -33,13 +30,12 @@ Route::controller(UserController::class)->group(function () {
 
 Route::controller(CompanyController::class)->group(function () {
     Route::prefix('company')->group(function () {
-        Route::get('/', 'index');
+        Route::middleware('auth:sanctum')->group(function () {
+            Route::post('/my-companies', 'myCompanies');
+            Route::post('/add-company-worker', 'addCompanyWorker');
+            Route::post('company_user_request', 'sendRequestCompany');
+        });
         Route::post('/register', 'register')->middleware('hasCompany');
     });
 });
 
-Route::get('test', function () {
-    $company = Company::with('owner')->get();
-
-    dd($company );
-});

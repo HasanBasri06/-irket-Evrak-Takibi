@@ -41,4 +41,9 @@ class User extends Authenticatable
     public function getRouteKeyName(): string {
         return 'id';
     }
+
+    public function worker()
+    {
+        return $this->belongsTo(CompanyWorker::class, 'user_id', 'id');
+    }
 }
